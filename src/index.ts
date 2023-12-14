@@ -1,4 +1,4 @@
-import { BandMembers } from './models/band-members';
+import { BandMembers, ExpectedBandMembers, TranformedBandMembersDetail } from './models/band-members';
 
 // Data
 const band: BandMembers = {
@@ -17,11 +17,28 @@ const band: BandMembers = {
   }
 };
 
-function cloneBandData (band: BandMembers): BandMembers {
+function cloneBandData(band: BandMembers): BandMembers {
   return JSON.parse(JSON.stringify(band)) as typeof band;
 }
 
-// copy band to expected
-const expected: BandMembers = cloneBandData(band);
-console.log(expected)
-console.assert(band !== expected)
+// clone band member, so that we don't modify the original object data
+const bandMemberClone: BandMembers = cloneBandData(band);
+console.assert(band !== bandMemberClone)
+console.assert(bandMemberClone.members.current[0].name === 'Sascha')
+
+//5.1
+function addPropAllToExpected(bandMembers: BandMembers = bandMemberClone): ExpectedBandMembers {
+  return {
+    members: {
+      ...bandMembers.members,
+      ...{
+        all: [
+          ...bandMembers.members.current.map(currentMember => currentMember.name),
+          ...bandMembers.members.past.map(pastMember => pastMember.name)]
+      }
+    }
+  }
+};
+
+const bandMembersWithAllProp: ExpectedBandMembers = addPropAllToExpected();
+console.assert(bandMembersWithAllProp.members.all.length === (band.members.current.length + band.members.past.length));

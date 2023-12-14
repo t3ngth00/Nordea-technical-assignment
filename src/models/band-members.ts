@@ -5,8 +5,18 @@ export interface Member {
 }
 
 export interface BandMembers {
-  members: {
-    current: Member[];
-    past: Member[];
-  }
+  members: BandMembersDetail
+}
+
+export interface BandMembersDetail {
+  current: Member[];
+  past: Member[];
+}
+
+export interface TranformedBandMembersDetail extends BandMembersDetail {
+  all: string[]
+}
+
+export interface ExpectedBandMembers {
+  members: TranformedBandMembersDetail
 }
