@@ -1,4 +1,4 @@
-import { BandMembers, ExpectedBandMembers, TranformedBandMembersDetail } from './models/band-members';
+import { BandMembers, Member, ExpectedBandMembers, TranformedBandMembersDetail } from './models/band-members';
 
 // Data
 const band: BandMembers = {
@@ -26,19 +26,20 @@ const bandMemberClone: BandMembers = cloneBandData(band);
 console.assert(band !== bandMemberClone)
 console.assert(bandMemberClone.members.current[0].name === 'Sascha')
 
-//5.1 + 5.2 
+//5.1 + 5.2 + 5.3
 function addPropAllToExpected(bandMembers: BandMembers = bandMemberClone): ExpectedBandMembers {
+  const allBandMemberDetail: Member[] = [...bandMembers.members.current, ...bandMembers.members.past]
+  const sortAllMemberByAge = allBandMemberDetail.sort((a, b) => b.age - a.age);
+
   return {
     members: {
       ...bandMembers.members,
       ...{
-        all: [
-          ...bandMembers.members.current.map(currentMember => currentMember.name.toLowerCase()),
-          ...bandMembers.members.past.map(pastMember => pastMember.name.toLowerCase())]
+        all: sortAllMemberByAge.map(member => member.name.toLowerCase())
       }
     }
   }
-};
+}
 
 const bandMembersWithAllProp: ExpectedBandMembers = addPropAllToExpected();
 console.assert(bandMembersWithAllProp.members.all.length === (band.members.current.length + band.members.past.length));
