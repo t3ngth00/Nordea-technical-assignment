@@ -26,10 +26,15 @@ const bandMemberClone: BandMembers = cloneBandData(band);
 console.assert(band !== bandMemberClone)
 console.assert(bandMemberClone.members.current[0].name === 'Sascha')
 
-//5.1 + 5.2 + 5.3
-function addPropAllToExpected(bandMembers: BandMembers = bandMemberClone): ExpectedBandMembers {
+//5.1 + 5.2 + 5.3 + 5.4
+function sortAllBandMember(bandMembers: BandMembers = bandMemberClone): ExpectedBandMembers {
   const allBandMemberDetail: Member[] = [...bandMembers.members.current, ...bandMembers.members.past]
-  const sortAllMemberByAge = allBandMemberDetail.sort((a, b) => b.age - a.age);
+  const sortAllMemberByAge = allBandMemberDetail.sort((a, b) => {
+    if (a.age !== b.age) {
+      return b.age - a.age 
+    }
+    return a.name.localeCompare(b.name)
+  })
 
   return {
     members: {
@@ -41,6 +46,8 @@ function addPropAllToExpected(bandMembers: BandMembers = bandMemberClone): Expec
   }
 }
 
-const bandMembersWithAllProp: ExpectedBandMembers = addPropAllToExpected();
-console.assert(bandMembersWithAllProp.members.all.length === (band.members.current.length + band.members.past.length));
-console.assert(bandMembersWithAllProp.members.all[0] === 'sascha');
+const allBandMembersSorted: ExpectedBandMembers = sortAllBandMember();
+console.assert(allBandMembersSorted.members.all.length === (band.members.current.length + band.members.past.length));
+console.assert(allBandMembersSorted.members.all[0] === 'sascha');
+console.assert(allBandMembersSorted.members.all[1] === 'gunter');
+console.assert(allBandMembersSorted.members.all[2] === 'raymond');
