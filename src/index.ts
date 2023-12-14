@@ -26,15 +26,15 @@ const bandMemberClone: BandMembers = cloneBandData(band);
 console.assert(band !== bandMemberClone)
 console.assert(bandMemberClone.members.current[0].name === 'Sascha')
 
-//5.1
+//5.1 + 5.2 
 function addPropAllToExpected(bandMembers: BandMembers = bandMemberClone): ExpectedBandMembers {
   return {
     members: {
       ...bandMembers.members,
       ...{
         all: [
-          ...bandMembers.members.current.map(currentMember => currentMember.name),
-          ...bandMembers.members.past.map(pastMember => pastMember.name)]
+          ...bandMembers.members.current.map(currentMember => currentMember.name.toLowerCase()),
+          ...bandMembers.members.past.map(pastMember => pastMember.name.toLowerCase())]
       }
     }
   }
@@ -42,3 +42,4 @@ function addPropAllToExpected(bandMembers: BandMembers = bandMemberClone): Expec
 
 const bandMembersWithAllProp: ExpectedBandMembers = addPropAllToExpected();
 console.assert(bandMembersWithAllProp.members.all.length === (band.members.current.length + band.members.past.length));
+console.assert(bandMembersWithAllProp.members.all[0] === 'sascha');
