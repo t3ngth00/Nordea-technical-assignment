@@ -1,4 +1,4 @@
-import { BandMembers, Member, ExpectedBandMembers, TranformedBandMembersDetail } from './models/band-members';
+import { BandMembers, Member, ExpectedBandMembers, TranformedBandMembersDetail, ExpectedBandMembersDetail, BandMembersDetail } from './models/band-members';
 
 // Data
 const band: BandMembers = {
@@ -18,7 +18,7 @@ const band: BandMembers = {
 };
 
 function cloneBandData(band: BandMembers): BandMembers {
-  return JSON.parse(JSON.stringify(band)) as typeof band;
+  return structuredClone(band) as typeof band;
 }
 
 // clone band member, so that we don't modify the original object data
@@ -31,7 +31,7 @@ function sortAllBandMember(bandMembers: BandMembers = bandMemberClone): Expected
   const allBandMemberDetail: Member[] = [...bandMembers.members.current, ...bandMembers.members.past]
   const sortAllMemberByAge = allBandMemberDetail.sort((a, b) => {
     if (a.age !== b.age) {
-      return b.age - a.age 
+      return b.age - a.age
     }
     return a.name.localeCompare(b.name)
   })
@@ -51,3 +51,47 @@ console.assert(allBandMembersSorted.members.all.length === (band.members.current
 console.assert(allBandMembersSorted.members.all[0] === 'sascha');
 console.assert(allBandMembersSorted.members.all[1] === 'gunter');
 console.assert(allBandMembersSorted.members.all[2] === 'raymond');
+
+// 6
+function transformToMembersPlayList(bandMembers: ExpectedBandMembers = allBandMembersSorted) {
+  
+  const allPlays: string[] = []
+  const allBandMemberDetail: Member[] = [...bandMembers.members.current, ...bandMembers.members.past]
+  const clonedData = structuredClone(bandMembers);
+
+  allBandMemberDetail.forEach(member => {
+    member.plays.forEach(play => {
+      if (!allPlays.includes(play)) {
+        allPlays.push(play)
+      }
+    })
+  })
+
+  const bandWithPlayMemberList: Record<string, string[]> = {}
+
+  allPlays.map(play => {
+    bandWithPlayMemberList[play] = [];
+
+    allBandMemberDetail.map(member => {
+      if (member.plays.includes(play)) {
+        bandWithPlayMemberList[play].push(member.name.toLowerCase())
+      }
+    })
+  })
+
+  return {
+    ...clonedData,
+    plays: bandWithPlayMemberList
+  }
+}
+
+const expected = transformToMembersPlayList();
+
+console.assert(expected.members.current.length === 4)
+console.assert(expected.members.past.length === 3)
+console.assert(expected.members.all.length === 7)
+console.assert(expected.members.all[1] === 'gunter')
+console.assert(expected.members.all[2] === 'raymond')
+console.assert(Object.keys(expected.plays).length === 5)
+console.assert(expected.plays["vocals"].length === 4)
+console.assert(expected.plays["synth"].length === 6)

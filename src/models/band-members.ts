@@ -20,3 +20,15 @@ export interface TranformedBandMembersDetail extends BandMembersDetail {
 export interface ExpectedBandMembers {
   members: TranformedBandMembersDetail
 }
+
+export interface Plays {
+  vocals: string[];
+  synth: string[];
+  guitar: string[];
+  bass: string[];
+  drums: string[];
+}
+
+export interface ExpectedBandMembersDetail extends ExpectedBandMembers {
+  plays: Plays
+}
