@@ -1,2 +1,4 @@
-output/
-node_modules/
+node_modules
+output
+.DS_Store
+.angular

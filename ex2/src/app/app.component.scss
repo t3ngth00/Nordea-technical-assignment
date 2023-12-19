@@ -1,0 +1,42 @@
+.app-container {
+  padding: 1rem;
+  margin-top: 15rem;
+  display: flex;
+  justify-content: center;
+}
+.app-container button {
+  border: none;
+  padding: 0.625rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
+}
+.app-container button.template, button.form-template {
+  margin-right: 2rem;
+}
+.app-container {
+  padding: 1rem;
+}
+.dialog-title {
+  margin-bottom: 3rem;
+}
+
+.dialog-container {
+  padding: 1rem;
+}
+.dialog-title {
+  margin-bottom: 3rem;
+}
+.dialog-content p {
+  line-height: 1.4;
+  font-size: 1.1rem;
+}
+
+.dialog-footer {
+  margin-top: 2rem;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
