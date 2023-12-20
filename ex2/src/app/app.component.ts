@@ -28,28 +28,22 @@ export class AppComponent {
 
   openDialogTemplate(view: TemplateRef<Element>) {
     this.dialogService.open(this.vcr, view, {
-      size: {
         width: '400px',
         height: '400px'
-      },
     });
   }
 
   openDialogFormTemplate(view: TemplateRef<Element>) {
     this.dialogService.open(this.formVcr, view, {
-      size: {
         width: '400px',
         height: '400px'
-      },
     });
   }
 
   openDialogComponent() {
     this.dialogService.open(DialogContentComponent, {
-      size: {
         width: '400px',
         height: '400px'
-      },
     });
   }
 

@@ -12,7 +12,7 @@ export class DialogService {
   constructor(
     private appRef: ApplicationRef,
     private injector: EnvironmentInjector
-  ) {}
+  ) { }
 
   open(
     vcrOrComponent: ViewContainerRef,

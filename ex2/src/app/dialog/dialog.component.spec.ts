@@ -2,34 +2,39 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogComponent } from './dialog.component';
 import { ElementRef } from '@angular/core';
-import { DialogService } from '../services/dialog.service';
+import { DialogService } from './services/dialog.service';
 
 describe('DialogComponent', () => {
   let dialogComponent: DialogComponent;
   let fixture: ComponentFixture<DialogComponent>;
   let dialogService: DialogService;
   let mockElementRef: ElementRef;
+  let nativeElemenetMock: any;
+  let mockDialogElementRef: any;
 
   beforeEach(async () => {
-    const mockElementRef = {
-      nativeElement: document.createElement('div')
+    nativeElemenetMock = {
+      remove: jasmine.createSpy('remove')
+    }
+
+    mockElementRef = {
+      nativeElement: nativeElemenetMock
     };
 
+    mockDialogElementRef = {
+      nativeElement: jasmine.createSpyObj("div", ['style'])
+    }
+
     await TestBed.configureTestingModule({
-      imports: [DialogComponent],
-      providers: [
-        {
-          provide: ElementRef, 
-          useValue: mockElementRef
-        }
-      ]
+      imports: [DialogComponent]
     })
       .compileComponents();
 
     dialogService = TestBed.inject(DialogService);
-    
+    dialogComponent = new DialogComponent(dialogService, mockElementRef)
+    dialogComponent.dialog = mockDialogElementRef as ElementRef<HTMLElement>;
+
     fixture = TestBed.createComponent(DialogComponent);
-    dialogComponent = fixture.componentInstance;
     fixture.detectChanges();
   });
 
@@ -40,35 +45,49 @@ describe('DialogComponent', () => {
   });
 
   it('should remove itself from the DOM when closed', function () {
-    spyOn(mockElementRef.nativeElement, 'remove');
     dialogComponent.close();
-    expect(mockElementRef.nativeElement.remove).toHaveBeenCalled();
+    expect(nativeElemenetMock.remove).toHaveBeenCalled();
+    expect(dialogService.config).toBeUndefined();
   });
 
   it('should apply default styles when no options are provided', function () {
-    dialogComponent.options = undefined;
-    dialogComponent.addOptions();
+    dialogComponent.config = undefined;
+    dialogComponent.configure();
 
-    expect(dialogComponent.dialog.nativeElement.style.minWidth).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.width).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.maxWidth).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.minHeight).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.height).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.maxHeight).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.backgroundColor).toBe('white');
+    expect(mockDialogElementRef.nativeElement.style.minWidth).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.width).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.maxWidth).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.minHeight).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.height).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.maxHeight).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.backgroundColor).toBe('white');
   });
 
-  it('should handle missing size property in options gracefully', function() {
-    dialogComponent.options = {};
-    dialogComponent.addOptions();
+  it('should handle empty config gracefully', function () {
+    dialogComponent.config = {};
+    dialogComponent.configure();
 
-    expect(dialogComponent.dialog.nativeElement.style.minWidth).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.width).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.maxWidth).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.minHeight).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.height).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.maxHeight).toBe('auto');
-    expect(dialogComponent.dialog.nativeElement.style.backgroundColor).toBe('white');
+    expect(mockDialogElementRef.nativeElement.style.minWidth).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.width).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.maxWidth).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.minHeight).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.height).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.maxHeight).toBe('auto');
+    expect(mockDialogElementRef.nativeElement.style.backgroundColor).toBe('white');
   });
+
+  it('should tkae the config from user config', function () {
+    dialogComponent.config = {
+      width: '200px',
+      height: '400px',
+      backgroundColor: 'red'
+    };
+    dialogComponent.configure();
+
+    expect(mockDialogElementRef.nativeElement.style.width).toBe('200px');
+    expect(mockDialogElementRef.nativeElement.style.height).toBe('400px');
+    expect(mockDialogElementRef.nativeElement.style.backgroundColor).toBe('red');
+  });
+
 });
 

@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { Observable, fromEvent, zip } from 'rxjs';
 import { DialogConfig } from './models/dialog-config';
 import { DialogService } from './services/dialog.service';
 
@@ -17,7 +16,7 @@ export class DialogComponent implements AfterViewInit {
   constructor(
     private dialogService: DialogService,
     private element: ElementRef
-  ) {}
+  ) { }
 
   @HostListener('document:keydown.escape')
   onEscape() {
@@ -31,18 +30,18 @@ export class DialogComponent implements AfterViewInit {
 
   configure() {
     this.dialog.nativeElement.style.minWidth =
-      this.config?.size?.minWidth || 'auto';
-    this.dialog.nativeElement.style.width = this.config?.size?.width || 'auto';
+      this.config?.minWidth || 'auto';
+    this.dialog.nativeElement.style.width = this.config?.width || 'auto';
     this.dialog.nativeElement.style.maxWidth =
-      this.config?.size?.maxWidth || 'auto';
+      this.config?.maxWidth || 'auto';
     this.dialog.nativeElement.style.minHeight =
-      this.config?.size?.minHeight || 'auto';
+      this.config?.minHeight || 'auto';
     this.dialog.nativeElement.style.height =
-      this.config?.size?.height || 'auto';
+      this.config?.height || 'auto';
     this.dialog.nativeElement.style.maxHeight =
-      this.config?.size?.maxHeight || 'auto';
+      this.config?.maxHeight || 'auto';
     this.dialog.nativeElement.style.backgroundColor =
-      this.config?.size?.background || 'white';
+      this.config?.backgroundColor || 'white';
   }
 
   close() {
