@@ -1,0 +1,43 @@
+<div class="app-container">
+  <ng-template #template>
+    <div class="dialog-container">
+      <div class="dialog-title">
+        <h2>Normal template</h2>
+      </div>
+      <div class="dialog-content">
+        <p>We are testing</p>
+      </div>
+      <div class="dialog-footer">
+        <button (click)="close()">Close</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #formTemplate>
+    <div class="dialog-container">
+      <div class="dialog-title">
+        <h2>Please login to use our service</h2>
+      </div>
+      <div class="dialog-content">
+        <form (ngSubmit)="submitForm(signUpForm)" #signUpForm="ngForm" class="signup-form">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" ngModel />
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" ngModel />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- With a ng template -->
+  <button class="template" (click)="openDialogTemplate(template)">
+    Open dialog with an ng template
+  </button>
+  <!-- With a ng form template -->
+  <button class="form-template" (click)="openDialogFormTemplate(formTemplate)">
+    Open dialog with a form template
+  </button>
+  <!-- With a component -->
+  <button (click)="openDialogComponent()">Open dialog with a component</button>
+</div>
