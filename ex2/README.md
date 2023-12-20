@@ -1,7 +1,12 @@
 ## Documentation and usage instruction for reusable dialog component
 
 > Note:  See [Appendix](#appendix) for explanation for technical terms
-> 
+
+#### How to run
+- First install all dependencies with `npm install`
+- App can be run by executing `npm run start`
+- Test can be run by executing `npm run test`
+
 #### Basic functionalities
 - Can be opened and closed when some events are triggered.
 - Have an "X" button that can be used to close the dialog. Clicking outside of the dialog will close it as well if there are no unsaved contents inside the dialog content
@@ -22,6 +27,7 @@
 - Only 1 dialog can be opened at a time
 
 #### Future plan
+- Add InjectionToken for setting up default config model.
 - Add support for animations for the dialog component
 - Keyboard interaction, such as tabbing 
 - Add feature that allow receiving a specific icon to the dialog
